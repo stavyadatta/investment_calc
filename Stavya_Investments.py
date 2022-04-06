@@ -4,13 +4,14 @@ import numpy_financial as npf
 @xw.func
 def final_calculator(interest_rate, sip, number_of_years, principal_amount=0):
     months = int(number_of_years * 12)
-    invested_amt = principal_amount
     monthly_interest = interest_rate / 12
     
-    for month in range(months):
-        invested_amt = invested_amt + invested_amt * monthly_interest
-        invested_amt  += sip
+    # Calculating the final amount
+    invested_amt = (sip * (((1 + monthly_interest) ** months) - 1) / monthly_interest) \
+                    + (principal_amount * (1 + monthly_interest) ** months)
     return invested_amt
+
+print(final_calculator(0.12, 1, 1, 10))
 
 @xw.func
 def irr_personal(sip, number_of_years, final_amount, principal_amount):
@@ -22,7 +23,6 @@ def irr_personal(sip, number_of_years, final_amount, principal_amount):
     irr = npf.irr(cash_flow)
     return irr * 12 * 100
 
-irr_personal(217857, 1, 5844763.294, 2594585)
     
     
     
